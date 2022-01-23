@@ -16,6 +16,45 @@ const startUpQuestions = [
           }
         },
       },
+      {
+        type: "input",
+        name: "managerId",
+        message: "What is the team manager's emloyee Id number?",
+        validate: (nameInput) => {
+          if (nameInput) {
+            return true;
+          } else {
+            console.log("Please enter the team manager's emloyee Id number!");
+            return false;
+          }
+        },
+      },
+      {
+        type: "input",
+        name: "managerEmail",
+        message: "What is the team manager's email address?",
+        validate: (nameInput) => {
+          if (nameInput) {
+            return true;
+          } else {
+            console.log("Please enter the team manager's email address!");
+            return false;
+          }
+        },
+      },
+      {
+        type: "input",
+        name: "managerOfficeNum",
+        message: "What is the team manager's office number?",
+        validate: (nameInput) => {
+          if (nameInput) {
+            return true;
+          } else {
+            console.log("Please enter the team manager's office number!");
+            return false;
+          }
+        },
+      }
 ]
 
 function init() {
