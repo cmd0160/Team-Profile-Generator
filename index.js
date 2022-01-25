@@ -1,9 +1,9 @@
-const fs = require("fs");
-const { writeFile, copyFile } = require('./utils/generate_file.js')
 const inquirer = require("inquirer");
+const { writeFile } = require('./utils/generate_file_template.js')
 const Manager = require('./lib/Manager.js');
 const Engineer = require('./lib/Engineer.js');
 const Intern = require('./lib/Intern.js');
+const generateHTML = require('./src/html_tmp')
 
 
 let newTeam = [];
@@ -93,6 +93,27 @@ function newEmployee() {
         }
       },
     },
+        // When Engineer in chosen from the inital list
+        {
+          type: "input",
+          name: "github",
+          message: "Please enter your GitHub profile information.",
+          validate: (name) => {
+            if (name) {
+              return true;
+            } else {
+              console.log("Enter your GitHub profile information.");
+              return false;
+            }
+          },
+          when: function ({ role }) {
+            if (role === `Engineer`) {
+              return true;
+            } else {
+              return false;
+            }
+          },
+        },
   ]).then(answers => {
     const {name, id, email} = answers;
     if(answers.role === 'Manager') {
@@ -114,14 +135,17 @@ function newEmployee() {
       if(ans.newEmployee){
         newEmployee();
       }else{
-        writeFile('./dist/index.html', generateHTML(newTeam))
-        copyFile()
-        .then( response => console.log(response.message))
+        console.log('Done!');
+        // writeFile('./dist/index.html', generateHTML(newTeam))
+        // .then( response => console.log(response.message))
       }
     })
   })
 }
-newEmployee();
+
+// Function call to initialize app
+newEmployee()
+
 
 // GIVEN a command-line application that accepts user input
 
