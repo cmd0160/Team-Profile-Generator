@@ -1,11 +1,30 @@
 const fs = require("fs");
 const inquirer = require("inquirer");
 
+function newEmployee(){
+    inquirer.prompt([
+        {
+          type: 'list',
+          name: 'role',
+          choices: ['Manager', 'Engineer', 'Intern'],
+        },
+        {
+          type: "input",
+          name: "name",
+          message: "What is your first and last name?",
+          validate: (nameInput) => {
+            if (nameInput) {
+              return true;
+            } else {
+              console.log("Please enter your first and last name!");
+              return false;
+            }
+          }
+        }
 
-function initStartUpQuestions() {
-  return inquirer.prompt(startUpQuestions);
-};
-initStartUpQuestions();
+    ]);
+}
+
 
 
 // GIVEN a command-line application that accepts user input
