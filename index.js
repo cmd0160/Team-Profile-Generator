@@ -1,31 +1,127 @@
 const fs = require("fs");
+const { writeFile, copyFile } = require('./utils/generate_file.js')
 const inquirer = require("inquirer");
+const Manager = require('./lib/Manager.js');
+const Engineer = require('./lib/Engineer.js');
+const Intern = require('./lib/Intern.js');
 
-function newEmployee(){
-    inquirer.prompt([
-        {
-          type: 'list',
-          name: 'role',
-          choices: ['Manager', 'Engineer', 'Intern'],
-        },
-        {
-          type: "input",
-          name: "name",
-          message: "What is your first and last name?",
-          validate: (nameInput) => {
-            if (nameInput) {
-              return true;
-            } else {
-              console.log("Please enter your first and last name!");
-              return false;
-            }
-          }
+
+let newTeam = [];
+
+
+function newEmployee() {
+  inquirer.prompt([
+    {
+      type: "list",
+      name: "role",
+      choices: ["Manager", "Engineer", "Intern"],
+    },
+    {
+      type: "input",
+      name: "name",
+      message: "What is your first and last name?",
+      validate: (nameInput) => {
+        if (nameInput) {
+          return true;
+        } else {
+          console.log("Please enter your first and last name!");
+          return false;
+        }
+      },
+    },
+    {
+      type: "input",
+      name: "id",
+      message: "What is your employee ID number?",
+      validate: (nameInput) => {
+        if (nameInput) {
+          return true;
+        } else {
+          console.log("Please enter your employee ID number");
+          return false;
+        }
+      },
+    },
+    {
+      type: "input",
+      name: "email",
+      message: "What is your email?",
+      validate: (value) => {
+        // Regex mail check (return true if valid mail)
+        let pass = value.match(
+          /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()\.,;\s@\"]+\.{0,1})+([^<>()\.,;:\s@\"]{2,}|[\d\.]+))$/
+        );
+        if (pass) {
+          return true;
         }
 
-    ]);
+        return "Please enter a valid email Address";
+      },
+    },
+    // When manager is selected from the inital list
+    {
+      type: "input",
+      name: "officeNumber",
+      message: "What is the Manager's office number?",
+
+      when: function ({ role }) {
+        if (role === `Manager`) {
+          return true;
+        } else {
+          return false;
+        }
+      },
+    },
+    // When Intern in chosen from the inital list
+    {
+      type: "input",
+      name: "school",
+      message: "What is your Intern's school?",
+      validate: (school) => {
+        if (school) {
+          return true;
+        } else {
+          console.log("Please enter your Intern's school!");
+          return false;
+        }
+      },
+      when: function ({ role }) {
+        if (role === `Intern`) {
+          return true;
+        } else {
+          return false;
+        }
+      },
+    },
+  ]).then(answers => {
+    const {name, id, email} = answers;
+    if(answers.role === 'Manager') {
+      newTeam.push(new Manager(name, id, email, answers.office));
+    } else if(answers.role === 'Intern') {
+      newTeam.push(new Intern(name, id, email, answers.school));
+    } else if(answers.role === 'Engineer') {
+      newTeam.push(new Engineer(name, id, email, answers.github)); 
+    }
+    inquirer.prompt([
+      {
+        type: 'confirm',
+        name: 'newEmployee',
+        message: 'Would you like to add another team member?',
+        default: false
+      }
+    ])
+    .then(ans => {
+      if(ans.newEmployee){
+        newEmployee();
+      }else{
+        writeFile('./dist/index.html', generateHTML(newTeam))
+        copyFile()
+        .then( response => console.log(response.message))
+      }
+    })
+  })
 }
-
-
+newEmployee();
 
 // GIVEN a command-line application that accepts user input
 
