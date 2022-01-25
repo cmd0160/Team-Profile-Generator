@@ -1,73 +1,16 @@
-const fs = require('fs');
-const inquirer = require('inquirer');
+const fs = require("fs");
+const inquirer = require("inquirer");
 
 
-const startUpQuestions = [
-    {
-        type: "input",
-        name: "managerName",
-        message: "What is the team manager's name?",
-        validate: (nameInput) => {
-          if (nameInput) {
-            return true;
-          } else {
-            console.log("Please enter the team manager's name!");
-            return false;
-          }
-        },
-      },
-      {
-        type: "input",
-        name: "managerId",
-        message: "What is the team manager's emloyee Id number?",
-        validate: (nameInput) => {
-          if (nameInput) {
-            return true;
-          } else {
-            console.log("Please enter the team manager's emloyee Id number!");
-            return false;
-          }
-        },
-      },
-      {
-        type: "input",
-        name: "managerEmail",
-        message: "What is the team manager's email address?",
-        validate: (nameInput) => {
-          if (nameInput) {
-            return true;
-          } else {
-            console.log("Please enter the team manager's email address!");
-            return false;
-          }
-        },
-      },
-      {
-        type: "input",
-        name: "managerOfficeNum",
-        message: "What is the team manager's office number?",
-        validate: (nameInput) => {
-          if (nameInput) {
-            return true;
-          } else {
-            console.log("Please enter the team manager's office number!");
-            return false;
-          }
-        },
-      }
-]
+function initStartUpQuestions() {
+  return inquirer.prompt(startUpQuestions);
+};
+initStartUpQuestions();
 
-function init() {
-    return inquirer.prompt(startUpQuestions);
-  }
-  init();
 
 // GIVEN a command-line application that accepts user input
 
 // Node Stuff
-
-// WHEN I start the application
-// THEN I am prompted to enter the team manager’s name, employee ID, email address, and office number
 
 // WHEN I enter the team manager’s name, employee ID, email address, and office number
 // THEN I am presented with a menu with the option to add an engineer or an intern or to finish building my team
@@ -80,7 +23,6 @@ function init() {
 
 // WHEN I decide to finish building my team
 // THEN I exit the application, and the HTML is generated
-
 
 // HTML stuff
 
